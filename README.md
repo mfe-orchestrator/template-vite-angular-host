@@ -62,12 +62,25 @@ anything imports a remote:**
 ```ts
 import { configure } from '@mfe-orchestrator-hub/client'
 
+const environment = import.meta.env.VITE_MFE_ENVIRONMENT || undefined
+
 configure({
   backendUrl: import.meta.env.VITE_MFE_BACKEND_URL,
   projectId: import.meta.env.VITE_MFE_PROJECT_ID,
-  environment: import.meta.env.VITE_MFE_ENVIRONMENT
+  environment
 })
 ```
+
+`backendUrl` and `projectId` are the only required options. **`environment` is optional**: left
+undefined, the client calls the *auto* route and the backend resolves the environment from the
+domain the page is served on, out of the domains declared for each environment in the console. One
+build then serves staging and production with no per deployment variable to set.
+
+That `|| undefined` is not decoration. Vite has two ways of saying "not set" — a variable missing
+from `.env` arrives as `undefined`, one declared with no value arrives as an empty string — and the
+orchestrator must be handed neither `""` nor the string `"undefined"`. The `||` collapses both into
+a real absence. Set `VITE_MFE_ENVIRONMENT` when this host already knows which environment it belongs
+to, or when a single domain has to serve several of them.
 
 **2. The remote, declared in `vite.config.ts` as a promise that resolves to a URL:**
 
@@ -97,13 +110,18 @@ template, so you can see what the environment actually returned.
 
 Copy `.env.example` to `.env` and fill it in. Vite injects them at build time.
 
-| variable | what it is |
-| --- | --- |
-| `VITE_MFE_BACKEND_URL` | orchestrator backend, including the `/api` suffix |
-| `VITE_MFE_PROJECT_ID` | id of your project in the orchestrator |
-| `VITE_MFE_ENVIRONMENT` | environment slug, ex. `DEV` |
+| variable | required | what it is |
+| --- | --- | --- |
+| `VITE_MFE_BACKEND_URL` | yes | orchestrator backend, including the `/api` suffix |
+| `VITE_MFE_PROJECT_ID` | yes | id of your project in the orchestrator |
+| `VITE_MFE_ENVIRONMENT` | no | environment slug, ex. `DEV`. Unset: resolved by the backend from the domain |
 
 `.env` is gitignored. Never commit real values.
+
+> [!NOTE]
+> These are the orchestrator's environment variables, and `VITE_MFE_ENVIRONMENT` holds the
+> orchestrator's *environment slug*. Neither has anything to do with Angular's `environment.ts`
+> configuration files, which this template does not use.
 
 ## Build output
 

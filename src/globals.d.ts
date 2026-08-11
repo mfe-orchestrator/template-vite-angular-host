@@ -3,7 +3,8 @@
 interface ImportMetaEnv {
   readonly VITE_MFE_BACKEND_URL: string
   readonly VITE_MFE_PROJECT_ID: string
-  readonly VITE_MFE_ENVIRONMENT: string
+  /** Optional: left unset, the backend resolves the environment from the domain. */
+  readonly VITE_MFE_ENVIRONMENT?: string
 }
 
 interface ImportMeta {
