@@ -1,0 +1,99 @@
+name: 🚀 Build and deploy
+
+on:
+  push:
+    tags:
+      - '*'
+
+  workflow_dispatch:
+    inputs:
+      version:
+        required: true
+        type: string
+        description: 'Version to release'
+
+# ─── Per project values, change these ────────────────────────────────────────
+# MICROFRONTEND_SLUG    the slug of this application in the orchestrator.
+#                       Set it as a repository variable (Settings ▸ Variables)
+#                       or replace the expression below with the literal slug.
+# ORCHESTRATOR_DOMAIN   base URL of your orchestrator console. Leave unset to
+#                       use the public one.
+#
+# The API key is a repository *secret*, never a variable and never a literal:
+#   Settings ▸ Secrets and variables ▸ Actions ▸ MICROFRONTEND_ORCHESTRATOR_API_KEY
+# ─────────────────────────────────────────────────────────────────────────────
+env:
+  MICROFRONTEND_SLUG: ${{ vars.MICROFRONTEND_SLUG }}
+  ORCHESTRATOR_DOMAIN: ${{ vars.ORCHESTRATOR_DOMAIN || 'https://console.mfe-orchestrator.dev' }}
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: 🔄 Setup pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 10
+
+    - name: ⚙️ Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: 'pnpm'
+        cache-dependency-path: '**/pnpm-lock.yaml'
+
+    - name: 🔧 Install Dependencies
+      run: pnpm install
+
+    - name: 🏗️ Build
+      run: pnpm build
+
+    # A host is consumable as a remote too, so it is uploaded to the
+    # orchestrator exactly like one.
+    - name: 🚀 Publish to MFE Orchestrator
+      uses: mfe-orchestrator/github-action@0.0.29
+      with:
+        apikey: ${{ secrets.MICROFRONTEND_ORCHESTRATOR_API_KEY }}
+        microfrontend-slug: ${{ env.MICROFRONTEND_SLUG }}
+        domain: ${{ env.ORCHESTRATOR_DOMAIN }}
+        file-path: './dist'
+        version: ${{ inputs.version || github.ref_name }}
+
+    # …and it is also shipped as a standalone nginx image, for whoever wants to
+    # deploy the shell on its own.
+    - name: 🐳 Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: 🔑 Login to GitHub Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: 🏷️ Extract metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ghcr.io/${{ github.repository }}
+        tags: |
+          type=ref,event=tag
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
+          type=sha
+
+    - name: 🚢 Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        platforms: linux/amd64,linux/arm64
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max

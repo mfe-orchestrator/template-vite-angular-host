@@ -1,0 +1,13 @@
+# Dependency build scripts must be approved explicitly, otherwise "pnpm install"
+# stops with ERR_PNPM_IGNORED_BUILDS. Both keys are here on purpose: pnpm 10
+# reads onlyBuiltDependencies, pnpm 11 reads allowBuilds.
+allowBuilds:
+  esbuild: true
+  '@parcel/watcher': true
+  lmdb: true
+  msgpackr-extract: true
+onlyBuiltDependencies:
+  - esbuild
+  - '@parcel/watcher'
+  - lmdb
+  - msgpackr-extract
