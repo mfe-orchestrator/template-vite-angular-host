@@ -4,18 +4,18 @@ import { configure } from '@mfe-orchestrator-hub/client'
 
 // The orchestrator environment (the slug, ex. "DEV") is optional, and Vite has two ways of
 // saying "not set": a variable missing from .env arrives as undefined, one declared with no
-// value arrives as an empty string. Neither is a usable slug, so `||` collapses both to
-// undefined — the orchestrator must never be handed "" or the string "undefined".
+// value arrives as an empty string. Neither is a usable slug, so `?.trim()` collapses both
+// to a falsy value — the orchestrator must never be handed "" or the string "undefined".
 //
-// Left undefined, the backend resolves the environment from the domain this page is served
-// on, out of the domains declared for each environment in the console. Set
-// VITE_MFE_ENVIRONMENT to pin it instead.
-const environment = import.meta.env.VITE_MFE_ENVIRONMENT || undefined
+// Omitted, the backend resolves the environment from the domain this page is served on, out
+// of the domains declared for each environment in the console. Set VITE_MFE_ENVIRONMENT to
+// pin it instead.
+const environment = import.meta.env.VITE_MFE_ENVIRONMENT?.trim()
 
 configure({
   backendUrl: import.meta.env.VITE_MFE_BACKEND_URL,
   projectId: import.meta.env.VITE_MFE_PROJECT_ID,
-  environment
+  ...(environment ? { environment } : {})
 })
 
 import { provideZonelessChangeDetection } from '@angular/core'

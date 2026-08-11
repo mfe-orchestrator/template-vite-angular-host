@@ -62,24 +62,26 @@ anything imports a remote:**
 ```ts
 import { configure } from '@mfe-orchestrator-hub/client'
 
-const environment = import.meta.env.VITE_MFE_ENVIRONMENT || undefined
+const environment = import.meta.env.VITE_MFE_ENVIRONMENT?.trim()
 
 configure({
   backendUrl: import.meta.env.VITE_MFE_BACKEND_URL,
   projectId: import.meta.env.VITE_MFE_PROJECT_ID,
-  environment
+  ...(environment ? { environment } : {})
 })
 ```
 
-`backendUrl` and `projectId` are the only required options. **`environment` is optional**: left
-undefined, the client calls the *auto* route and the backend resolves the environment from the
-domain the page is served on, out of the domains declared for each environment in the console. One
-build then serves staging and production with no per deployment variable to set.
+`backendUrl` and `projectId` are the only required options. **`environment` is optional**: omitted,
+the client calls the *auto* route and the backend resolves the environment from the domain the page
+is served on, out of the domains declared for each environment in the console. One build then serves
+staging and production with no per deployment variable to set.
 
-That `|| undefined` is not decoration. Vite has two ways of saying "not set" — a variable missing
-from `.env` arrives as `undefined`, one declared with no value arrives as an empty string — and the
-orchestrator must be handed neither `""` nor the string `"undefined"`. The `||` collapses both into
-a real absence. Set `VITE_MFE_ENVIRONMENT` when this host already knows which environment it belongs
+Neither the `?.trim()` nor the conditional spread is decoration. Vite has two ways of saying "not
+set" — a variable missing from `.env` arrives as `undefined`, one declared with no value arrives as
+an empty string — and the orchestrator must be handed neither `""` nor the string `"undefined"`; the
+`?.trim()` also catches a value that is only whitespace. The spread then leaves the key out of the
+object entirely rather than passing it as `undefined`, which is the same shape every other host
+template emits. Set `VITE_MFE_ENVIRONMENT` when this host already knows which environment it belongs
 to, or when a single domain has to serve several of them.
 
 **2. The remote, declared in `vite.config.ts` as a promise that resolves to a URL:**
