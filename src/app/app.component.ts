@@ -10,7 +10,7 @@ import {
   globalVariables,
   identities,
   manifest,
-  type MicrofrontendEntry
+  type Microfrontend
 } from '@mfe-orchestrator-hub/client'
 
 /**
@@ -85,7 +85,7 @@ import {
   ]
 })
 export class AppComponent implements OnInit {
-  readonly microfrontends = signal<MicrofrontendEntry[]>([])
+  readonly microfrontends = signal<Microfrontend[]>([])
   readonly variables = signal<Array<[string, string]>>([])
   readonly error = signal('')
   readonly remoteState = signal<'loading' | 'ready' | 'error'>('loading')
