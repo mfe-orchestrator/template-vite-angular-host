@@ -13,6 +13,11 @@ marketplace as `vite-host-angular`. Vite + Angular 21, wired as a **host**.
 > published to a registry yet. That single dependency is the only thing missing — everything
 > else in this template installs and builds. Until it is published, either wait for it or point
 > the dependency at a local checkout of the SDK.
+>
+> The range is `^0.1.0`. A caret on a `0.x` version is deliberately narrow: it accepts `0.1.x`
+> only, **not** `0.2.0`. The SDK is new and parts of its API are still settling, so that is the
+> intended level of caution — the cost is that you have to widen this range yourself when the SDK
+> moves to `0.2.0`, otherwise `pnpm install` fails to resolve it.
 
 ## Getting started
 
