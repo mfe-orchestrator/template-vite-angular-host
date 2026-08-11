@@ -14,13 +14,9 @@ import {
 } from '@mfe-orchestrator-hub/client'
 
 /**
- * The whole shell lives in this one file on purpose.
- *
- * This component is exposed through Module Federation (see vite.config.ts), and
- * @analogjs/vite-plugin-angular does not compile the *local* imports of an exposed
- * module when vite-plugin-federation is in play: splitting this into child
- * components makes the build fail with "X is not exported by ...". Keep an exposed
- * component self contained, or stop exposing it.
+ * The whole shell lives in this one file only to keep the template small: this
+ * component is exposed through Module Federation (see vite.config.ts), and you
+ * are free to split it into child components.
  */
 @Component({
   selector: 'app-root',

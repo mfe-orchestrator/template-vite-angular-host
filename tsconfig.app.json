@@ -1,6 +1,18 @@
 {
+  // This is the tsconfig @analogjs/vite-plugin-angular compiles the app with:
+  // it defaults to ./tsconfig.app.json, and it is the Angular compiler — not
+  // esbuild — that turns every .ts in `include` into the JavaScript Vite bundles.
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    // MUST stay false. tsconfig.json sets "noEmit": true so that a plain `tsc`
+    // only type checks, but the plugin runs `program.emit()` through this config:
+    // with noEmit inherited, emit produces nothing, the plugin hands Vite an empty
+    // module for every source file, and the whole app silently vanishes from the
+    // bundle — starting with src/main.ts, which leaves index.html with no entry
+    // script and no bootstrap in production, while the build still exits 0.
+    // Nothing is written to disk: the plugin clears outDir and captures the emit
+    // in memory.
+    "noEmit": false,
     "outDir": "./out-tsc/app"
   },
   "include": ["src/**/*.ts"],
