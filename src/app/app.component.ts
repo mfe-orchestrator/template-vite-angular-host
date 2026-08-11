@@ -11,7 +11,7 @@ import {
   identities,
   manifest,
   type MicrofrontendEntry
-} from '@mfe-orchestrator/client'
+} from '@mfe-orchestrator-hub/client'
 
 /**
  * The whole shell lives in this one file on purpose.
