@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@angular/common": "^21.2.0",
-    "@angular/compiler": "^21.2.0",
+    "@angular/compiler": "^22.1.1",
     "@angular/core": "^21.2.0",
     "@angular/platform-browser": "^21.2.0",
     "@mfe-orchestrator-hub/client": "^0.1.1",
