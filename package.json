@@ -26,6 +26,6 @@
     "@angular/compiler-cli": "^21.2.0",
     "@originjs/vite-plugin-federation": "^1.4.1",
     "typescript": "~5.9.3",
-    "vite": "^7.1.12"
+    "vite": "^8.2.1"
   }
 }
