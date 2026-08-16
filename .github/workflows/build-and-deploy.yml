@@ -16,7 +16,8 @@ on:
 # MICROFRONTEND_SLUG    the slug of this application in the orchestrator.
 #                       Set it as a repository variable (Settings ▸ Variables)
 #                       or replace the expression below with the literal slug.
-# ORCHESTRATOR_DOMAIN   base URL of your orchestrator console. Leave unset to
+# MICROFRONTEND_ORCHESTRATOR_DOMAIN
+#                       base URL of your orchestrator console. Leave unset to
 #                       use the public one.
 #
 # The API key is a repository *secret*, never a variable and never a literal:
@@ -24,7 +25,7 @@ on:
 # ─────────────────────────────────────────────────────────────────────────────
 env:
   MICROFRONTEND_SLUG: ${{ vars.MICROFRONTEND_SLUG }}
-  ORCHESTRATOR_DOMAIN: ${{ vars.ORCHESTRATOR_DOMAIN || 'https://console.mfe-orchestrator.dev' }}
+  MICROFRONTEND_ORCHESTRATOR_DOMAIN: ${{ vars.MICROFRONTEND_ORCHESTRATOR_DOMAIN || 'https://console.mfe-orchestrator.dev' }}
 
 jobs:
   build-and-deploy:
@@ -58,7 +59,7 @@ jobs:
       with:
         apikey: ${{ secrets.MICROFRONTEND_ORCHESTRATOR_API_KEY }}
         microfrontend-slug: ${{ env.MICROFRONTEND_SLUG }}
-        domain: ${{ env.ORCHESTRATOR_DOMAIN }}
+        domain: ${{ env.MICROFRONTEND_ORCHESTRATOR_DOMAIN }}
         file-path: './dist'
         version: ${{ inputs.version || github.ref_name }}
 

@@ -142,7 +142,7 @@ Configure these once, in the repository settings:
 | --- | --- | --- |
 | secret | `MICROFRONTEND_ORCHESTRATOR_API_KEY` | your orchestrator API key |
 | variable | `MICROFRONTEND_SLUG` | the slug of this host in the orchestrator |
-| variable | `ORCHESTRATOR_DOMAIN` | your console URL, optional, defaults to `https://console.mfe-orchestrator.dev` |
+| variable | `MICROFRONTEND_ORCHESTRATOR_DOMAIN` | your console URL, optional, defaults to `https://console.mfe-orchestrator.dev` |
 
 The API key is a **secret**, never a variable and never a literal in the workflow file. If you
 prefer hardcoding the two per project values instead of using repository variables, replace the
