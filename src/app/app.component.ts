@@ -112,9 +112,16 @@ export class AppComponent implements OnInit {
    */
   private async loadExampleRemote(): Promise<void> {
     try {
-      const module: Record<string, unknown> = await import('exampleremote/Button')
-      const component = (module['default'] ??
-        Object.values(module).find(value => typeof value === 'function')) as
+      const loaded: Record<string, unknown> = await import('exampleremote/Button')
+      // vite-plugin-federation hands back a module without a default export
+      // wrapped as { default: <the module> }, so unwrap it before looking.
+      const wrapped = loaded['default']
+      const module = (
+        typeof wrapped === 'object' && wrapped !== null ? wrapped : loaded
+      ) as Record<string, unknown>
+      const component = (typeof module['default'] === 'function'
+        ? module['default']
+        : Object.values(module).find(value => typeof value === 'function')) as
         | Type<unknown>
         | undefined
 
