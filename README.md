@@ -6,7 +6,7 @@ marketplace as `vite-host-angular`. Vite + Angular 22, wired as a **host**.
 ## Requirements
 
 - Node.js 22.22.3, 24.15 or newer (what Angular 22 supports)
-- [pnpm](https://pnpm.io) 10 or newer
+- [pnpm](https://pnpm.io) 12 (pinned in `packageManager`; `corepack enable` picks it up)
 
 > [!NOTE]
 > The client SDK is published as `@mfe-orchestrator-hub/client` and this template depends on it at
