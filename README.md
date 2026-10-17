@@ -1,19 +1,19 @@
 # Vite & Angular — host template
 
 Starter template for the [MFE Orchestrator](https://github.com/mfe-orchestrator), listed in the
-marketplace as `vite-host-angular`. Vite + Angular 21, wired as a **host**.
+marketplace as `vite-host-angular`. Vite + Angular 22, wired as a **host**.
 
 ## Requirements
 
-- Node.js 20 or newer
+- Node.js 22.22.3, 24.15 or newer (what Angular 22 supports)
 - [pnpm](https://pnpm.io) 10 or newer
 
 > [!NOTE]
 > The client SDK is published as `@mfe-orchestrator-hub/client` and this template depends on it at
-> `^0.1.0`. A caret on a `0.x` version is deliberately narrow: it accepts `0.1.x`
-> only, **not** `0.2.0`. The SDK is new and parts of its API are still settling, so that is the
+> `^0.2.1`. A caret on a `0.x` version is deliberately narrow: it accepts `0.2.x`
+> only, **not** `0.3.0`. The SDK is new and parts of its API are still settling, so that is the
 > intended level of caution — the cost is that you have to widen this range yourself when the SDK
-> moves to `0.2.0`, otherwise `pnpm install` fails to resolve it.
+> moves to `0.3.0`, otherwise `pnpm install` fails to resolve it.
 
 ## Getting started
 
