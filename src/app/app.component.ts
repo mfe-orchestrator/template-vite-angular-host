@@ -10,7 +10,7 @@ import {
   globalVariables,
   identities,
   manifest,
-  type Microfrontend
+  type Frontend
 } from '@mfe-orchestrator-hub/client'
 
 /**
@@ -43,7 +43,7 @@ import {
         <p class="warn">{{ error() }}</p>
       } @else {
         <ul>
-          @for (mfe of microfrontends(); track mfe.slug) {
+          @for (mfe of frontends(); track mfe.slug) {
             <li>
               <strong>{{ mfe.name }}</strong> ({{ mfe.slug }}) — served version
               {{ mfe.version }}
@@ -81,7 +81,7 @@ import {
   ]
 })
 export class AppComponent implements OnInit {
-  readonly microfrontends = signal<Microfrontend[]>([])
+  readonly frontends = signal<Frontend[]>([])
   readonly variables = signal<Array<[string, string]>>([])
   readonly error = signal('')
   readonly remoteState = signal<'loading' | 'ready' | 'error'>('loading')
@@ -98,7 +98,7 @@ export class AppComponent implements OnInit {
   private async loadEnvironment(): Promise<void> {
     try {
       const [data, vars] = await Promise.all([manifest(), globalVariables()])
-      this.microfrontends.set(data.microfrontends ?? [])
+      this.frontends.set(data.frontends ?? [])
       this.variables.set(Object.entries(vars))
     } catch (error) {
       this.error.set((error as Error).message)

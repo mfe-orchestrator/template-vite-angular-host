@@ -58,10 +58,10 @@ export default defineConfig({
         './App': './src/app/app.component.ts'
       },
       remotes: {
-        // One entry per microfrontend this host consumes.
+        // One entry per frontend this host consumes.
         //
         // The key is the federation-safe name you import from ("exampleremote/Button").
-        // The string passed to remoteUrl() is the *slug* of the microfrontend in the
+        // The string passed to remoteUrl() is the *slug* of the frontend in the
         // orchestrator: change it to yours, and add one entry per extra remote.
         //
         // Never write a URL here. The host does not choose the version it gets: the

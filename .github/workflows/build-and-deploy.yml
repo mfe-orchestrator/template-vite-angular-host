@@ -58,7 +58,7 @@ jobs:
       uses: mfe-orchestrator/github-action@0.0.29
       with:
         apikey: ${{ secrets.MICROFRONTEND_ORCHESTRATOR_API_KEY }}
-        microfrontend-slug: ${{ env.MICROFRONTEND_SLUG }}
+        frontend-slug: ${{ env.MICROFRONTEND_SLUG }}
         domain: ${{ env.MICROFRONTEND_ORCHESTRATOR_DOMAIN }}
         file-path: './dist'
         version: ${{ inputs.version || github.ref_name }}

@@ -97,9 +97,9 @@ federation({
 })
 ```
 
-`remoteUrl('example-remote')` takes the **slug** of a microfrontend and returns the URL the backend
+`remoteUrl('example-remote')` takes the **slug** of a frontend and returns the URL the backend
 resolved for it, already pinned to a version. Rename the key and the slug to match your own
-microfrontends, and add one entry per remote.
+frontends, and add one entry per remote.
 
 The SDK also exposes `manifest()`, `globalVariables()` and `identities()`, all used in this
 template, so you can see what the environment actually returned.
