@@ -18,6 +18,12 @@ configure({
   ...(environment ? { environment } : {})
 })
 
+// Application Insights, only when the environment defines APPLICATIONINSIGHTS_CONNECTION_STRING
+// (see src/telemetry.ts). Not awaited: telemetry never holds the app back.
+import { startTelemetry } from './telemetry'
+
+void startTelemetry()
+
 import { provideZonelessChangeDetection } from '@angular/core'
 import { bootstrapApplication } from '@angular/platform-browser'
 import { AppComponent } from './app/app.component'
